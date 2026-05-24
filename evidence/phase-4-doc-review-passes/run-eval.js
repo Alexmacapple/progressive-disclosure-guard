@@ -11,6 +11,8 @@ const criteria = [
   ["grounding", /\bGrounding pass:/],
   ["regression", /\bRegression pass/],
   ["source", /\b(source evidence|source-grounded|manifest|README|\.env|diff)\b/i],
+  ["skillInvocation", /\bSkill invocation pass:.*?\bselected\b.*?\bentrypoint read\b/i],
+  ["readReceipt", /\bRead receipt:.*?\bfiles read\b.*?\bapproximate lines inspected\b/i],
   ["overlapInspection", /\bArtifacts inspected:.*?\b(code|scripts|skills|agents|hooks|configs)\b.*?\bOverlap findings:/i],
   ["sourceGroundedMatrix", /\bSource-grounded matrix:.*?\bclaim\b.*?\bsource\b.*?\bverdict\b.*?\bimpact\b/i],
   ["verification", /`[^`]+`|\/[A-Za-z0-9._~:/?#[\]@!$&'()*+,;=-]+/],
@@ -33,6 +35,14 @@ if (!proseScore?.withPdg.matched.includes("sourceGroundedMatrix")) {
 }
 if (!proseScore.withPdg.matched.includes("overlapInspection")) {
   throw new Error("prose-only-score fixture must include overlap inspection");
+}
+
+const skillOverload = rows.find((row) => row.id === "skill-overload-read-receipt");
+if (!skillOverload?.withPdg.matched.includes("skillInvocation")) {
+  throw new Error("skill-overload-read-receipt fixture must include a skill invocation pass");
+}
+if (!skillOverload.withPdg.matched.includes("readReceipt")) {
+  throw new Error("skill-overload-read-receipt fixture must include a read receipt");
 }
 
 const report = renderReport(rows);
