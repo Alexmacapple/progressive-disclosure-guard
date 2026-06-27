@@ -146,6 +146,14 @@ function injectMechanics(body, mechanics) {
   const lines = body.split(/\r?\n/);
   const title = lines[0]?.startsWith("# ") ? lines[0] : null;
   const rest = title ? lines.slice(1).join("\n").trimStart() : body;
+  if (title && rest.startsWith("## En bref")) {
+    const nextSectionIndex = rest.indexOf("\n## ", "## En bref".length);
+    if (nextSectionIndex > 0) {
+      const brief = rest.slice(0, nextSectionIndex).trimEnd();
+      const remaining = rest.slice(nextSectionIndex).trimStart();
+      return `${title}\n\n${brief}\n\n${mechanics}\n\n${remaining}`;
+    }
+  }
   return title ? `${title}\n\n${mechanics}\n\n${rest}` : `${mechanics}\n\n${rest}`;
 }
 

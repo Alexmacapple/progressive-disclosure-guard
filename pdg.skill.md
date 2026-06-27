@@ -26,6 +26,14 @@ constitution:
 
 # PDG - Progressive Disclosure Guard
 
+## En bref
+
+Le PDG vérifie qu'un livrable est prêt à être finalisé. Il force trois choses :
+identifier ce qui existe et doit être préservé, classifier ce qui est connu ou
+inconnu, et exiger une preuve réelle avant de déclarer `done`. Trigger : diff
+supérieur à trois fichiers, contrat public, comportement partagé, handoff ou
+claim de vérification. Non-trigger : typo, formatting, lookup ou statut simple.
+
 Use this skill before finalizing specs, plans, implementation prompts, architecture reviews, UX critiques, handoff docs, code reviews, install/migration instructions, or substantial code changes.
 
 Do not invoke PDG for typo-only edits, formatting-only edits, read-only lookups, one-command status checks, or low-risk changes that do not affect handoff text, behavior, contracts, source of truth, install steps, verification claims, or generated outputs.

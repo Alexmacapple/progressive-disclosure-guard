@@ -12,6 +12,7 @@ const forbidden = [
   ["Implementer", "Pass"].join(" ")
 ];
 const requiredSections = [
+  "## En bref",
   "## Invariants",
   "## Mission Frame",
   "## Mission Brief",
@@ -27,6 +28,7 @@ const requiredSections = [
   "## Final Checklist"
 ];
 const requiredPhrases = [
+  "Le PDG vérifie qu'un livrable est prêt à être finalisé",
   "source inventory",
   "before any review, score, approval, implementation decision",
   "from prose alone when code",

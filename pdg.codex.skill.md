@@ -6,20 +6,20 @@ description: Use before finalizing specs, plans, implementation prompts, archite
 <!--
 GENERATED FILE - DO NOT EDIT DIRECTLY
 source: pdg.skill.md
-source_hash: 3455a35ffdb081aa080b384dfc9007196a830b4b8817503f3424527713dfab57
+source_hash: 2cc9bdd92678145fa75d2ae96f4b62a65d182235d34a5e9e20e51911b55ec4aa
 generated_by: pdg generate-skills
 target: codex
 -->
 
 # PDG - Progressive Disclosure Guard
 
-## Codex Mechanics
+## En bref
 
-- Use `rg` for repository inventory.
-- Use `apply_patch` for manual file edits.
-- Use Codex subagents only when file ownership is disjoint.
-- Do not run parallel agents on the same files.
-- Do not mark a risky Codex implementation as reviewed by the same Codex context.
+Le PDG vérifie qu'un livrable est prêt à être finalisé. Il force trois choses :
+identifier ce qui existe et doit être préservé, classifier ce qui est connu ou
+inconnu, et exiger une preuve réelle avant de déclarer `done`. Trigger : diff
+supérieur à trois fichiers, contrat public, comportement partagé, handoff ou
+claim de vérification. Non-trigger : typo, formatting, lookup ou statut simple.
 
 Use this skill before finalizing specs, plans, implementation prompts, architecture reviews, UX critiques, handoff docs, code reviews, install/migration instructions, or substantial code changes.
 
@@ -28,6 +28,14 @@ Do not invoke PDG for typo-only edits, formatting-only edits, read-only lookups,
 A substantial code change touches more than 3 files, changes a public route or API contract, introduces a store/pipeline/state machine, changes persistence, or modifies behavior other modules depend on.
 
 Assume the next implementer is low-context, literal, rushed, and able to satisfy the words while damaging the product.
+
+## Codex Mechanics
+
+- Use `rg` for repository inventory.
+- Use `apply_patch` for manual file edits.
+- Use Codex subagents only when file ownership is disjoint.
+- Do not run parallel agents on the same files.
+- Do not mark a risky Codex implementation as reviewed by the same Codex context.
 
 ## Invariants
 
