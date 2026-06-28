@@ -1,12 +1,12 @@
 ---
 name: progressive-disclosure-guard
-description: Use before finalizing specs, plans, implementation prompts, architecture reviews, UX critiques, handoff docs, code reviews, install/migration instructions, or after substantial code changes. Stay silent for typos, formatting-only edits, read-only lookups, one-command status checks, or low-risk changes with no handoff, behavior, or source-of-truth risk.
+description: Utiliser quand un livrable risqué, plan, revue, migration, handoff, instruction d'installation, spec, prompt d'implémentation ou changement substantiel doit être finalisé ; rester silencieux pour typo, lookup, statut simple ou changement sans risque de preuve.
 ---
 
 <!--
 GENERATED FILE - DO NOT EDIT DIRECTLY
 source: pdg.skill.md
-source_hash: 2cc9bdd92678145fa75d2ae96f4b62a65d182235d34a5e9e20e51911b55ec4aa
+source_hash: cefa05b23617046128602608725436c5578f3b1f72f5053344b9ebc41587d107
 generated_by: pdg generate-skills
 target: codex
 -->
@@ -16,18 +16,14 @@ target: codex
 ## En bref
 
 Le PDG vérifie qu'un livrable est prêt à être finalisé. Il force trois choses :
-identifier ce qui existe et doit être préservé, classifier ce qui est connu ou
-inconnu, et exiger une preuve réelle avant de déclarer `done`. Trigger : diff
-supérieur à trois fichiers, contrat public, comportement partagé, handoff ou
-claim de vérification. Non-trigger : typo, formatting, lookup ou statut simple.
+préserver l'existant, distinguer connu/inconnu et exiger une preuve réelle avant
+de déclarer `done`.
 
-Use this skill before finalizing specs, plans, implementation prompts, architecture reviews, UX critiques, handoff docs, code reviews, install/migration instructions, or substantial code changes.
-
-Do not invoke PDG for typo-only edits, formatting-only edits, read-only lookups, one-command status checks, or low-risk changes that do not affect handoff text, behavior, contracts, source of truth, install steps, verification claims, or generated outputs.
-
-A substantial code change touches more than 3 files, changes a public route or API contract, introduces a store/pipeline/state machine, changes persistence, or modifies behavior other modules depend on.
-
-Assume the next implementer is low-context, literal, rushed, and able to satisfy the words while damaging the product.
+Use this skill before finalizing specs, plans, implementation prompts,
+architecture reviews, UX critiques, handoff docs, code reviews,
+install/migration instructions, or substantial code changes. Ne pas l'invoquer
+pour typo, formatting, lookup, statut simple ou changement sans risque de
+handoff, contrat, source of truth, preuve, installation ou génération.
 
 ## Codex Mechanics
 
@@ -41,29 +37,35 @@ Assume the next implementer is low-context, literal, rushed, and able to satisfy
 
 Always:
 
-- read the named source-of-truth files and nearby code, scripts, skills, agents, hooks, and configs before any review, score, approval, implementation decision, or constraint; do not interpret prose, inventories, or cited paths as evidence until the relevant source has been opened; for reviews, comparisons, or scores, build a source-grounded claim matrix with `claim`, `source`, `verdict`, and `impact`;
-- for risky skill calls, run a bounded skill invocation pass before expanding context; check twice that the selected skill is necessary, name only the minimal sources to inspect, and mark material unread files `Unknown` with a reason before finalizing;
-- name the existing behavior, files, callbacks, routes, stores, pipelines, generated outputs, and install paths that must be preserved;
-- convert dangerous wording into explicit `MUST` / `MUST NOT` constraints;
-- require verification through a real command, public route, install path, or product entry path;
-- label same-agent review as `PDG self-check, not independent review`.
-- for any new file over 200 lines, require `PDG-LARGE-FILE-JUSTIFICATION:` with why the file must stay dense;
-- for any broad `service`, `utils`, `manager`, or `handler` file, require `PDG-BROAD-FILE-JUSTIFICATION:` with the single responsibility it owns.
-- for risky tasks, treat the user request as a mission under constraints: mission, objective lock, constraints, success criteria, source of truth, smallest useful step, verification path, and deliverable.
+- read source-of-truth files and nearby code, scripts, skills, agents, hooks,
+  configs, and tests before any review, score, approval, implementation decision,
+  or constraint; never treat prose, inventories, or cited paths as evidence until
+  the source is open;
+- for reviews, comparisons, or scores, build a source-grounded claim matrix with
+  `claim`, `source`, `verdict`, and `impact`;
+- for risky skill calls, run the Skill Invocation Pass, check twice that the
+  skill is needed, and mark material unread files `Unknown` with a reason;
+- name behavior, files, callbacks, routes, stores, pipelines, generated outputs
+  and install paths to preserve;
+- turn vague words into `MUST` / `MUST NOT`, and require proof through a real
+  command, route, install path, workflow, source, or artifact;
+- label same-agent review as `PDG self-check, not independent review`;
+- require `PDG-LARGE-FILE-JUSTIFICATION:` above 200 lines and
+  `PDG-BROAD-FILE-JUSTIFICATION:` for broad `service`, `utils`, `manager`, or
+  `handler` files.
 
 Never:
 
-- replace a working route, store, hook, pipeline, state machine, prompt path, persistence contract, or install flow without end-to-end verification;
-- create a parallel engine, store, router, workflow, generator, or doctrine file when an existing one should be extended;
-- claim `done`, `safe`, `verified`, `tested`, `working`, `installed`, or `updated` without naming the command, route, preview, install path, workflow, source, or artifact checked;
-- treat "roughly 200 lines" as permission to exceed 200 lines without an explicit justification marker;
-- treat generated files as canonical when a source file and generator exist;
+- replace a working route, store, hook, pipeline, state machine, prompt path,
+  persistence contract or install flow without end-to-end verification;
+- create a parallel engine, store, router, workflow, generator, or doctrine file
+  when an existing one should be extended;
+- claim `done`, `safe`, `verified`, `tested`, `working`, `installed`, or
+  `updated` without naming the proof checked;
 - score, approve, reject, compare, or interpret a spec/review from prose alone when code, scripts, skills, agents, hooks, configs, or tests could confirm or falsify the claim;
-- treat cited paths, inventories, document structure, or prose summaries as proof before opening the source and checking claimed behavior and overlaps;
-- claim a skill was applied when only the skill prose was read and no task-relevant source files were inspected;
-- use a material file as evidence without either reading it or stating why it stayed unread and which claim remains `Unknown`;
-- overwrite generated documentation, inventories, human overrides, or binary assets without a diff/archive receipt and a named verification path;
-- bulk-load full catalogs, doctrines, folders, fixtures, or skill trees when a focused source will answer.
+- treat generated files as canonical when a source file and generator exist;
+- bulk-load catalogs, doctrines, folders, fixtures or skill trees when a focused
+  source answers the risk.
 
 ## Trigger Boundary
 
@@ -84,18 +86,10 @@ If the boundary is ambiguous, run only a two-line trigger check: `PDG triggered:
 
 ## Mission Frame
 
-Before expanding a task, identify:
-
-- the mission;
-- the objective lock;
-- explicit user constraints;
-- forbidden outcomes;
-- success criteria;
-- source of truth;
-- smallest useful step;
-- verification path;
-- deliverable;
-- facts that are known, unknown, or unverifiable.
+Before expanding a task, identify mission, objective lock, explicit constraints,
+forbidden outcomes, success criteria, source of truth, smallest useful step,
+verification path, deliverable, and facts that are known, unknown, or
+unverifiable.
 
 Treat the request as a mission under constraints, not as rails and not as permission to invent a new objective.
 
@@ -105,16 +99,9 @@ Freedom of method is not permission to silently change the mission.
 
 ## Mission Brief
 
-For risky tasks, frame the work as:
-
-- Mission: what must be achieved;
-- Objective Lock: what must not drift;
-- Constraints: explicit limits, forbidden outcomes, and non-goals;
-- Success Criteria: observable completion signals;
-- Progressive Disclosure Gates: known/unknown/assumed, source of truth, preserved behavior, smallest useful step, verification path, final receipt;
-- Deviation Protocol: how any departure from the literal request is declared;
-- Verification Protocol: how completion claims are proven;
-- Deliverable: the final format expected by the user.
+For risky tasks, use a short brief: Mission, Objective Lock, Constraints, Success
+Criteria, Progressive Disclosure Gates, Deviation Protocol, Verification
+Protocol, and Deliverable.
 
 Do not turn the mission brief into a giant plan. Use the smallest frame that prevents hidden drift.
 
@@ -142,28 +129,22 @@ NOT VERIFIED: [reason]
 
 ## Workflow
 
-1. Decide whether PDG triggers; if not, say why in one line and stop the PDG pass.
-2. If a skill drives the work, run the Skill Invocation Pass before expanding context.
-3. Inspect existing artifacts and overlaps before known/unknown classification; for reviews, comparisons, or scores, mark major claims `confirmed`, `partial`, `unsupported`, or `unknown` before rating them.
+1. Decide whether PDG triggers; if not, say why in one line and stop.
+2. Run the Skill Invocation Pass if a skill drives the work.
+3. Inspect existing artifacts and overlaps before known/unknown classification.
 4. Classify known knowns, known unknowns, unknown knowns, and unknown unknowns.
 5. Name preserved behavior and source-of-truth files.
-6. Red-team dangerous wording such as `refactor`, `simplify`, `wire`, `reuse`, `support`, `migrate`, `install`, `generate`, `verified`, or `done`.
-7. Convert ambiguity into `MUST`, `MUST NOT`, non-goals, and forbidden shortcuts.
-8. Require regression proof through the real workflow, not only isolated helper existence.
-9. If review is same-agent, label it as self-check and request human validation for risky work.
+6. Red-team words such as `refactor`, `simplify`, `wire`, `reuse`, `support`,
+   `migrate`, `install`, `generate`, `verified`, or `done`.
+7. Convert ambiguity into `MUST`, `MUST NOT`, non-goals and forbidden shortcuts.
+8. Require regression proof through the real workflow.
+9. Label same-agent review as self-check.
 
 ## Skill Invocation Pass
 
 When a skill is used for work that will produce a decision, review, score, handoff, implementation, install instruction, or durable artifact, start with a short invocation pass instead of dumping the whole skill context.
 
-State:
-
-- selected skill and why it triggered;
-- skill entrypoint read;
-- second usefulness check: why a lighter direct answer or narrower source read is not enough;
-- minimum task-relevant source files that must be inspected before any conclusion;
-- context expansion rule: load references, fixtures, scripts, or extra skills only when the entrypoint or inspected evidence requires them;
-- conclusions refused until inspection is complete.
+State the selected skill, entrypoint read, why it triggered, why a lighter answer is insufficient, minimum sources to inspect, and the rule for loading references, fixtures, scripts or extra skills.
 
 Before finalizing, apply the unread-file rule:
 
@@ -177,11 +158,15 @@ The goal is not a large receipt. The goal is to make unread evidence impossible 
 
 Before interpreting a spec, review, score, or comparison, open the sources that could confirm or falsify each material claim. A path list, inventory, document outline, or prose summary is not evidence until the referenced source has been opened.
 
-Inspect existing code, scripts, skills, agents, hooks, configs, and tests with `rg` or focused reads.
+Inspect code, scripts, skills, agents, hooks, configs, and tests with `rg` or
+focused reads. Inspection depth starts with files named in the diff plus one level of direct dependents: importers, callers, config consumers, generated
+outputs, or install paths. Do not recurse unless a named risk justifies it. If
+the set is large, inspect highest-risk dependents and mark the rest
+`inspection bounded, residual risk noted`.
 
-Inspection depth starts with files named in the diff plus one level of direct dependents: importers, callers, config consumers, generated outputs, or install paths. Do not recurse beyond that unless a specific risk justifies it. If the direct-dependent set is large, inspect the highest-risk or closest dependents and mark the rest `inspection bounded, residual risk noted`.
-
-Output `artifacts inspected` and `overlap findings`, classify overlaps as `reuse`, `extend`, `avoid`, `replace`, or `none`, then convert real overlaps into `MUST reuse/extend` and `MUST NOT duplicate`. If inspection is skipped or blocked, mark the claim verdict `Unknown`, cap confidence or score, and name the blocked source.
+Output `artifacts inspected` and `overlap findings`; classify overlaps as
+`reuse`, `extend`, `avoid`, `replace`, or `none`. If inspection is skipped or
+blocked, mark the claim `Unknown`, cap confidence, and name the blocked source.
 
 ## Known/Unknown Pass
 
@@ -194,35 +179,40 @@ Bias toward uncertainty. If an item could fit multiple quadrants, classify it as
 
 ## Enforce Progressive Disclosure Everywhere
 
-- Apply the smallest PDG pass that covers the named risk; expand only when inspected evidence shows broader behavior, contract, source-of-truth, or generated-output risk.
-- Docs/specs/plans: use an index or top-level plan that points to phase, decision, domain, or implementation files when the topic is broad.
-- Code: expose a narrow entry point first, then split orchestration, domain logic, IO, state, persistence, rendering, prompt construction, and validation by responsibility.
-- New files must stay at or below 200 lines unless they include `PDG-LARGE-FILE-JUSTIFICATION:`.
-- Broad `service`, `utils`, `manager`, or `handler` files must include `PDG-BROAD-FILE-JUSTIFICATION:` and state their single responsibility.
-- Runtime flows: fetch or compute summaries/lists first, then expand details only when the real path needs them.
-- APIs/search/discovery: expose summary/list endpoints first and detail endpoints only on explicit demand.
-- UI work: implement the smallest real workflow surface first, then reveal advanced controls or secondary panels only after the main path works.
-- Prompts/agents: select targeted domains or capabilities before injecting detailed doctrine.
-- Skills: choose one primary skill from name/description first, check twice that it is needed, run the Skill Invocation Pass, then load extra skills or references only when inspected evidence requires them.
-- Tests/verification: start with narrow contract checks and the shortest real workflow, then broaden according to named risk. State what was checked and what remains unverified.
-- Reviews: read root context first, then expand only into files that evidence a risk.
+- Apply the smallest PDG pass that covers the named risk; expand only when
+  evidence shows broader behavior, contract, source-of-truth, or generated-output
+  risk.
+- Docs/specs/plans: index first, focused pages second.
+- Code: narrow entry point first, then split orchestration, domain logic, IO,
+  state, persistence, rendering, prompt construction, and validation.
+- Runtime/API/UI flows: summary or smallest real workflow first, details on
+  demand.
+- Prompts/agents/skills: select one domain or skill from name/description first,
+  check twice that it is needed, then load references only when evidence requires
+  them.
+- Tests/verification: start with the shortest real workflow, then broaden by
+  named risk.
 
 A solution that works by dumping all knowledge, all domains, all tests, all UI, or all doctrine into one large artifact is a failed implementation unless explicitly requested.
 
 ## Documentation Generation Mode
 
-When generating or updating documentation, specs, portals, API docs, architecture docs, or user guides with LLM help:
+When generating or updating durable docs with LLM help:
 
-1. Build a source inventory before drafting. Name inspected files, routes, entry points, APIs, env vars, modules, data stores, generated outputs, and unknowns.
-2. Classify sources by audience, relevance, and safety: user/product, architecture, operator, internal-only, stale, secret-bearing, generated, binary asset, or out of scope.
-3. Generate from the inventory in layers: overview or index first, focused pages or sections second, cross-cutting architecture only when source evidence supports it.
-4. Prefer bounded structured outputs for repeated units. If the LLM output is invalid, incomplete, or unsupported, fall back to deterministic minimal text and report the gap.
-5. Preserve human overrides, accepted corrections, and curated source-of-truth sections. MUST NOT overwrite them silently during regeneration.
-6. Archive or diff prior generated artifacts before replacement when the output is durable or user-facing.
-7. Suggested questions, examples, summaries, architecture claims, limitations, and dependencies MUST be answerable from named sources.
-8. Removed behavior and stale questions MUST be removed from generated docs unless explicitly retained as historical notes.
-9. Heavy generated assets and duplicated binary formats require `PDG-BINARY-ASSET-JUSTIFICATION:` in an adjacent text file. Prefer committing only the referenced optimized asset unless a source or fallback asset is intentionally needed.
-10. Verification must include cheap deterministic checks first, optional rubric-based LLM judge second, and a real route, preview, or workflow for user-visible docs.
+1. Build a source inventory before drafting: inspected files, routes, APIs, env
+   vars, modules, data stores, generated outputs and unknowns.
+2. Classify sources by audience, relevance and safety: user/product,
+   architecture, operator, internal-only, stale, secret-bearing, generated,
+   binary asset, or out of scope.
+3. Generate in layers: overview/index first, focused pages second, cross-cutting
+   architecture only when evidence supports it.
+4. Preserve human overrides and curated source-of-truth sections. MUST NOT
+   overwrite them silently.
+5. Suggested questions, examples, summaries, limitations and dependencies MUST be
+   answerable from named sources.
+6. Removed behavior and stale questions MUST be removed unless retained as
+   history.
+7. Verify with deterministic checks plus a real route, preview, or workflow.
 
 ## Documentation Review Passes
 
@@ -232,28 +222,26 @@ When generated or updated documentation is durable, user-facing, or used by anot
 2. **Grounding pass:** every feature, dependency, architecture claim, limitation, default question, example, and suggested next action points to named source evidence. Inventory alone is not grounding; unsupported claims are removed, marked `Unknown`, or converted into questions for the human.
 3. **Regression pass:** verify the real generated output path still works. Check links or previews, generated-file drift, preserved human overrides, stale removals, binary asset justification, and the product route or install path when applicable.
 
-Every actionable review finding that is machine-checkable MUST become a fixture, regression test, or checklist item before final. The final receipt must name the three passes, inventory counts or exclusions, review findings converted to proof, skipped checks, and residual risk. An LLM judge can support grounding, but it must not replace source evidence or real workflow verification.
+Every actionable review finding that is machine-checkable MUST become a fixture,
+regression test, or checklist item before final. The final receipt names the
+three passes, inventory counts or exclusions, skipped checks, and residual risk.
 
 ## PDD Mode
 
-When durable documentation must be created, converted, updated, reviewed, indexed, or consumed by a documentation chatbot, and PDD is available in the repository or toolchain, use PDD as the documentation engine.
+When durable documentation must be created, converted, updated, reviewed,
+indexed, or consumed by a chatbot, and PDD is available, use it as the
+documentation engine.
 
-PDD is an external documentation engine contract, not a PDG dependency. PDG MUST NOT import, vendor, or reimplement PDD runtime behavior.
+PDD is an external documentation engine contract, not a PDG dependency. PDG MUST
+NOT import, vendor, or reimplement PDD runtime behavior. Require PDD receipts
+before claiming completion: source inventory, source map, manifest, coverage,
+grounding, regression, stale-removal when behavior disappeared, and preserved
+human overrides.
 
-Require PDD receipts before claiming completion:
-
-- source inventory;
-- source map;
-- manifest;
-- coverage receipt;
-- grounding receipt;
-- regression receipt;
-- stale-removal receipt when behavior disappeared;
-- preserved human overrides when existing documentation is regenerated or converted.
-
-For existing docs, the correct PDG instruction is not merely "do not invent docs by hand". It is: convert or update the durable documentation through the PDD model so the output has PDD artifacts, evidence mapping, stale removal, and regression proof.
-
-For documentation chatbots, PDG MUST require the chatbot to consume PDD artifacts or APIs. The chatbot MUST NOT create a parallel documentation engine, scanner, generator, source map, or review contract when PDD is available.
+For existing docs, convert or update through PDD so the output keeps artifacts,
+evidence mapping, stale removal, and regression proof. For chatbots, consume PDD
+artifacts or APIs; do not create a parallel scanner, generator, source map, or
+review contract.
 
 ## Fallbacks
 
@@ -265,6 +253,13 @@ For documentation chatbots, PDG MUST require the chatbot to consume PDD artifact
 - Generated output drift: update only the canonical source or generator, regenerate, and do not hand-edit generated variants.
 
 Human validation card: changed files; real workflow or command to inspect; expected result; risk the human is accepting; exact approval sentence: `Approved after human validation.`
+
+## Pièges fréquents
+
+- Confondre PDG avec une permission de charger tout le contexte.
+- Ne jamais remplacer une preuve par une intention ou un résumé.
+- NE PAS appeler une revue indépendante si le même agent a produit le diff.
+- Hors périmètre : débat de priorité produit ou réécriture non demandée.
 
 ## Examples
 
@@ -285,39 +280,19 @@ PDG output: triggered even if the diff is one file, because it changes behavior 
 
 ## Output
 
-Add a section named `PDG pass` with:
-
-- trigger decision;
-- skill invocation pass, if a skill drove the work;
-- artifacts inspected;
-- overlap findings;
-- source-grounded claim matrix;
-- material unread files and `Unknown` claims, if any;
-- known knowns;
-- known unknowns;
-- unknown knowns;
-- unknown unknowns;
-- bad implementation path;
-- guardrail added;
-- existing behavior that must be preserved;
-- forbidden implementation shortcuts;
-- regression proof required.
+Add a section named `PDG pass` with: trigger decision; skill invocation pass if used; artifacts inspected; overlap findings; source-grounded claim matrix; material unread files and `Unknown` claims; known/unknown quadrants; bad implementation path; guardrail added; preserved behavior; forbidden shortcuts; regression proof required.
 
 ## Final Checklist
 
-- trigger boundary checked;
-- requested outcome, explicit constraints, forbidden outcomes, and success criteria identified;
-- no silent reinterpretation of the user request;
-- skill invocation pass completed when a skill drove the work;
-- source of truth read or marked `Unknown`;
-- every material file mentioned but unread is justified, or the related claim is marked `Unknown`;
-- overlap inspection completed or marked `Unknown`;
-- source-grounded claim matrix completed before any score, approval, or comparison;
-- preserved behavior named;
-- dangerous wording constrained with `MUST` / `MUST NOT`;
-- non-goals and forbidden shortcuts stated;
-- real verification path required or blocked verification reported;
-- generated files treated as generated;
-- for generated docs, evidence manifest, preserved overrides, artifact diff/archive, and doc-quality checks reported;
-- for generated or updated docs, coverage, grounding, and regression review passes reported or explicitly skipped with residual risk;
-- same-agent review labeled `PDG self-check, not independent review`.
+- [ ] trigger boundary checked;
+- [ ] requested outcome, constraints, forbidden outcomes and success criteria identified;
+- [ ] no silent reinterpretation of the user request;
+- [ ] source of truth read or marked `Unknown`;
+- [ ] material unread files justified or related claims marked `Unknown`;
+- [ ] overlap inspection and source-grounded claim matrix completed;
+- [ ] preserved behavior, non-goals and forbidden shortcuts named;
+- [ ] dangerous wording constrained with `MUST` / `MUST NOT`;
+- [ ] real verification path required or blocked verification reported;
+- [ ] generated files treated as generated;
+- [ ] generated docs include evidence manifest, preserved overrides, diff/archive and review passes;
+- [ ] same-agent review labeled `PDG self-check, not independent review`.
